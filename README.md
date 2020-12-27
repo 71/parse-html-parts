@@ -68,11 +68,14 @@ const p = root.children[0];
 
 expect(nodes.length).toBe(4);
 
-expect(node[0].ownerElement).toBe(p);
-expect(node[1].ownerElement).toBe(p);
-expect(node[2].ownerElement).toBe(p);
-expect(node[3]).toBe(p.childNodes[1]);
+expect(nodes[0].ownerElement).toBe(p);
+expect(nodes[1].ownerElement).toBe(p);
+expect(nodes[2].ownerElement).toBe(p);
+expect(nodes[3]).toBe(p.childNodes[1]);
 ```
 
 </p>
 </details>
+
+Please see the [html.test.ts](html.test.ts) file for an example `html` function
+that renders directly to a `DocumentFragment`.

@@ -103,7 +103,7 @@ export namespace LiteralPart {
       /** The name of the attribute, e.g. `"href"`. */
       public readonly attributeName: string,
       /** The parts of the attribute, e.g. `["/", "/index.html"]`. */
-      public readonly valueParts: readonly string[],
+      public readonly valueParts: TemplateStringsArray,
       /** The index of the part that this literal part represents, e.g. `0`. */
       public readonly index: number,
     ) {
@@ -141,9 +141,9 @@ export namespace LiteralPart {
  * expect(part1.attributeName).toBe("style");
  * expect(part2.attributeName).toBe("href");
  *
- * expect(part0.valueParts).toEqual(["", ":", ""]);
+ * expect([...part0.valueParts]).toEqual(["", ":", ""]);
  * expect(part1.valueParts).toBe(part0.valueParts);  // reference equality
- * expect(part2.valueParts).toEqual(["", ""]);
+ * expect([...part2.valueParts]).toEqual(["", ""]);
  *
  * expect(part0.index).toBe(0);
  * expect(part1.index).toBe(1);
@@ -157,7 +157,9 @@ export function parseHtmlLiteral(strings: readonly string[]) {
       nameStart = 0,
       valueStart = 0,
       attributeName = "",
-      attributeValueParts = [] as string[];
+      attributeValueParts = [] as string[] & { raw: string[] };
+
+  attributeValueParts.raw = attributeValueParts;
 
   function getAttributeLiteralPart(string: string) {
     const index = attributeValueParts.push(string.slice(valueStart)) - 1;
@@ -169,7 +171,8 @@ export function parseHtmlLiteral(strings: readonly string[]) {
     if (attributeValueParts.length > 0) {
       attributeValueParts.push(string.slice(0, position));
       Object.freeze(attributeValueParts);
-      attributeValueParts = [];
+      attributeValueParts = [] as string[] & { raw: string[] };
+      attributeValueParts.raw = attributeValueParts;
     }
   }
 

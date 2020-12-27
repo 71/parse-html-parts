@@ -126,9 +126,9 @@ describe("the parser", () => {
     expect(part1.attributeName).toBe("style");
     expect(part2.attributeName).toBe("href");
 
-    expect(part0.valueParts).toEqual(["", ":", ""]);
+    expect([...part0.valueParts]).toEqual(["", ":", ""]);
     expect(part1.valueParts).toBe(part0.valueParts);  // reference equality
-    expect(part2.valueParts).toEqual(["", ""]);
+    expect([...part2.valueParts]).toEqual(["", ""]);
 
     expect(part0.index).toBe(0);
     expect(part1.index).toBe(1);
@@ -280,7 +280,7 @@ expect.extend({
                            `instead of '${actual.attributeName}'`,
           };
         }
-        if (!this.equals(actual.valueParts, expected.parts)) {
+        if (!this.equals([...actual.valueParts], expected.parts)) {
           return {
             pass: false,
             message: () => `expected part #${i} to have attribute parts ` +
